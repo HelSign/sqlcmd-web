@@ -19,6 +19,7 @@
     <context:component-scan base-package="ua.com.juja.cmd"/>
 
     <jpa:repositories base-package="ua.com.juja.cmd.model" entity-manager-factory-ref="emf"/>
+
     <bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" id="emf">
         <property value="ua.com.juja.cmd.model.entity" name="packagesToScan"/>
         <property name="dataSource" ref="logDataSource"/>

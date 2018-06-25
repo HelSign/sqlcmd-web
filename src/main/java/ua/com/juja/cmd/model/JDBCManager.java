@@ -51,14 +51,14 @@ public class JDBCManager implements DBManager {
         try {
             connection = DriverManager.getConnection(url, user, password);
             template = new JdbcTemplate(new SingleConnectionDataSource(connection, false));
-            this.userName=user;
-            this.dbName=dbName;
+            this.userName = user;
+            this.dbName = dbName;
         } catch (Exception e) {
             connection = null;
             template = null;
             LOG.error("", e);
             throw new RuntimeException(String.format("Connection failed to database: %s as user: %s , url: %s ",
-                            dbName, user, url), e);
+                    dbName, user, url), e);
         }
         LOG.trace("Connection has been created");
     }
@@ -157,7 +157,7 @@ public class JDBCManager implements DBManager {
         checkIfConnected();
         String query = "DELETE FROM public." + table + " WHERE ";
         Set<String> columns = condition.getNames();
-        for (String colName : columns) {
+        for (String colName: columns) {
             query = String.format(query + "%1$s='%2$s'", colName, condition.get(colName));
         }
         LOG.trace(query);
@@ -268,22 +268,16 @@ public class JDBCManager implements DBManager {
      * @throws SQLException
      */
     @Override
-    public Set<String> getTablesNames() throws SQLException {
+    public Set<String> getTablesNames() throws SQLException {//todo streams
         LOG.traceEntry();
         checkIfConnected();
         String query = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' " +
                 "AND table_type='BASE TABLE'";
-        Set<String> result = new HashSet<>();
         LOG.trace(query);
-        try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(query)) {
-            while (rs.next()) {
-                result.add(rs.getString("table_name"));
-            }
-        } catch (SQLException e) {
-            LOG.error("", e);
-            throw e;
-        }
+        Set<String> result = new LinkedHashSet<>(template.query(query,
+                (rs, rownum) -> {
+                    return rs.getString("table_name");
+                }));
         LOG.traceExit();
         return result;
     }
@@ -301,9 +295,10 @@ public class JDBCManager implements DBManager {
     }
 
     @Override
-    public String getUserName(){
+    public String getUserName() {
         return userName;
     }
+
     @Override
     public String getDbName() {
         return dbName;

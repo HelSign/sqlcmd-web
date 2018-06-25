@@ -27,8 +27,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public String printMenu(ModelMap model) {
-        model.addAttribute("items", service.getCommands());
+    public String printMenu() {
         return "menu";
     }
 
