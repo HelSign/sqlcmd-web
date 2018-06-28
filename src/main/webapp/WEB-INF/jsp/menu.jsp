@@ -6,9 +6,14 @@
     <head>
         <title>SQLCMD</title>
         <script type="text/javascript" src="${ctx}/resources/js/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="${ctx}/resources/js/jquery.tmpl.js"></script>
         <script type="text/javascript" src="${ctx}/resources/js/menu.js"></script>
     </head>
     <body>
-    <div id="menu_container"></div>
+        <div id="container">
+            <row-template style="display:none">
+                <a  href="{{= $data}}">{{= }}</a><br/>
+            </row-template>
+        </div>
     </body>
 </html>

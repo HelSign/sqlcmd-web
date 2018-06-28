@@ -2,18 +2,23 @@
 <%@ taglib prefix = "c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 <html>
-    <head>
-        <title>SQLCMD</title>
-    </head>
-    <body>
-        <table>
-            <c:forEach items="${table}" var="row">
-               <tr>
-                    <c:forEach items="${row}" var="element">
-                      <td>  ${element}</td>
-                    </c:forEach>
-                </tr>
-            </c:forEach>
-        </table>
-    </body>
+<c:set var="ctx" value="${pageContext.request.contextPath}"/>
+<head>
+    <title>SQLCMD</title>
+    <script type="text/javascript" src="${ctx}/resources/js/jquery-3.3.1.js"></script>
+    <script type="text/javascript" src="${ctx}/resources/js/jquery.tmpl.js"></script>
+    <script type="text/javascript" src="${ctx}/resources/js/find.js"></script>
+    <script type="text/javascript">
+        var markup =
+            "<tr>  {{each $data}}   " +
+            "<td>\${$value}</td>  " +
+            " {{/each}}</tr>";
+        $.template( "row-template", markup );
+    </script>
+
+</head>
+<body>
+<table id="container">
+</table>
+</body>
 </html>

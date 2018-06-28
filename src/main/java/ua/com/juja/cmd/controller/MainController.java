@@ -26,11 +26,6 @@ public class MainController {
         return "help";
     }
 
-    @RequestMapping(value = "/menu", method = RequestMethod.GET)
-    public String printMenu() {
-        return "menu";
-    }
-
     @RequestMapping(value = "/connect", method = RequestMethod.GET)
     public String connectToDbGet(ModelMap model) {
         model.addAttribute("connection", new Connection());
@@ -48,19 +43,11 @@ public class MainController {
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     public String find(HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-        String table = request.getParameter("table");
+
         if (dbManager == null) {
             return "redirect:connect";
-        } else {
-            if (table == null)
-                table = "book";
-            try {
-                request.setAttribute("table", service.find(dbManager, table));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } else
             return "find";
-        }
     }
 
     @RequestMapping(value = "/tables", method = RequestMethod.GET)
@@ -68,14 +55,8 @@ public class MainController {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null) {
             return "redirect:connect";
-        } else {
-            try {
-                request.setAttribute("tables", service.tables(dbManager));
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        } else
             return "tables";
-        }
     }
 
     @RequestMapping(value = "/create", method = RequestMethod.POST)
