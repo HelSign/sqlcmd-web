@@ -46,7 +46,7 @@ public class RestService {
         String table = request.getParameter("table");
         List<List<String>> tableContent = new LinkedList<>();
         if (table == null)
-            table = "book";
+            return tableContent;
         try {
             tableContent = service.find(dbManager, table);
         } catch (SQLException e) {

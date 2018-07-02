@@ -8,17 +8,23 @@
     <script type="text/javascript" src="${ctx}/resources/js/jquery-3.3.1.js"></script>
     <script type="text/javascript" src="${ctx}/resources/js/jquery.tmpl.js"></script>
     <script type="text/javascript" src="${ctx}/resources/js/find.js"></script>
-    <script type="text/javascript">
-        var markup =
-            "<tr>  {{each $data}}   " +
-            "<td>\${$value}</td>  " +
-            " {{/each}}</tr>";
-        $.template( "row-template", markup );
+     <script id="tableHeader" type="text/x-jquery-tmpl">
+            <tr>
+                {{each $data}}
+                    <th><h1> {{= $value}} </h1> </th>
+                {{/each}}
+            </tr>
     </script>
-
+    <script id="row-template" type="text/x-jquery-tmpl">
+            <tr>
+                {{each $data}}
+                    <td> {{= $value}}</td>
+                {{/each}}
+            </tr>
+        </script>
 </head>
 <body>
-<table id="container">
+<table id="container" border="1">
 </table>
 </body>
 </html>

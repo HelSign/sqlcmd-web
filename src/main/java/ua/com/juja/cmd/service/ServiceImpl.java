@@ -6,10 +6,7 @@ import ua.com.juja.cmd.model.*;
 import ua.com.juja.cmd.model.entity.UserOperation;
 
 import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Component
 public abstract class ServiceImpl implements Service {
@@ -35,12 +32,15 @@ public abstract class ServiceImpl implements Service {
 
     @Override
     public List<List<String>> find(DBManager dbManager, String table) throws SQLException {
-        List<DataSet> dataSets = dbManager.getTableData(table);
         List<List<String>> result = new LinkedList<>();
-        for (DataSet dataSet : dataSets) {
+        Set<String> columnsSet = dbManager.getTableColumns(table);
+        List<DataSet> dataSets = dbManager.getTableData(table);
+        List<String> columnsList = new LinkedList<>(columnsSet);
+        result.add(columnsList);
+        for (DataSet dataSet: dataSets) {
             List<String> row = new LinkedList<>();
             result.add(row);
-            for (Object value : dataSet.getValues()) {
+            for (Object value: dataSet.getValues()) {
                 row.add((String) value);
             }
         }
