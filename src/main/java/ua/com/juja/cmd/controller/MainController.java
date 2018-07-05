@@ -37,7 +37,7 @@ public class MainController {
                                   BindingResult result, ModelMap model, HttpServletRequest request) {
         DBManager dbManager = service.connect(connection.getDbName(), connection.getUserName(), connection.getPassword());
         request.getSession().setAttribute("dbManager", dbManager);
-        return "redirect:menu";
+        return "redirect:main";
     }
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)

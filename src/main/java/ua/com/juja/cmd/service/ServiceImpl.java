@@ -29,7 +29,6 @@ public abstract class ServiceImpl implements Service {
         return dbManager;
     }
 
-
     @Override
     public List<List<String>> find(DBManager dbManager, String table) throws SQLException {
         List<List<String>> result = new LinkedList<>();
