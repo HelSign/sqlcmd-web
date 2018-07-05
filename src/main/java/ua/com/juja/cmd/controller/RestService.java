@@ -45,7 +45,7 @@ public class RestService {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         String table = request.getParameter("table");
         List<List<String>> tableContent = new LinkedList<>();
-        if (table == null)
+        if (table == null || dbManager == null)
             return tableContent;
         try {
             tableContent = service.find(dbManager, table);
