@@ -21,6 +21,15 @@ public class MainController {
     @Autowired
     private Service service;
 
+    @RequestMapping(value = "/main", method = RequestMethod.GET)
+    public String mainPage(HttpServletRequest request) {
+        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
+        if (dbManager == null) {
+            return "redirect:connect";
+        } else
+            return "main";
+    }
+
     @RequestMapping(value = "/help", method = RequestMethod.GET)
     public String printHelp() {
         return "help";
@@ -108,7 +117,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/operations/{name}", method = RequestMethod.GET)
-    public String showAllOperations(ModelMap model, @PathVariable(value="name") String userName) {
+    public String showAllOperations(ModelMap model, @PathVariable(value = "name") String userName) {
         model.addAttribute("operations", service.userOperations(userName));
         return "operations";
 
