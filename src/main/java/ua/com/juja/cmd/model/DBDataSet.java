@@ -67,48 +67,22 @@ public class DBDataSet implements DataSet {
         return new ArrayList<>(data.values());
     }
 
-    /** Return hash value using hashCode() of names and values in DataSet
-     *
-     * @return int as hash value of the DataSet
-     */
-    @Override
-    public int hashCode() {
-        Set<String> names = this.getNames();
-        int hashCode = 0;
-        for (String name : names) {
-            try {
-                hashCode += name.hashCode() + this.get(name).hashCode();
-            } catch (NullPointerException e) {
-                hashCode += 0;
-            }
-        }
-        return hashCode;
-    }
-
-    @Override
-    public boolean equals(Object dataSet) {
-        if (dataSet == null) return false;
-        if (!(dataSet instanceof DBDataSet)) return false;
-        if (this == dataSet) return true;
-
-        Set<String> names = this.getNames();
-        Set<String> dataSetNames = ((DBDataSet) dataSet).getNames();
-        if (names.size() != dataSetNames.size()) return false;
-
-        for (String name : names) {
-            try {
-                if (!this.get(name).equals(((DBDataSet) dataSet).get(name)))
-                    return false;
-            } catch (Exception e) {
-                LOG.error("", e);
-                return false;
-            }
-        }
-        return true;
-    }
 
     @Override
     public String toString() {
         return Arrays.deepToString(data.keySet().toArray());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        DBDataSet dbDataSet = (DBDataSet) o;
+        return Objects.equals(data, dbDataSet.data);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(data);
     }
 }

@@ -67,15 +67,16 @@ public class DBDataSetTest {
     @Test
     public void testHashCodeNull() {
         dataSet.put(null, null);
-        int expectedHash = "name1".hashCode() + "value1".hashCode()
-                + "name2".hashCode() + "value2".hashCode()
-                + "name3".hashCode() + "value3".hashCode();
-
-        assertEquals(expectedHash, dataSet.hashCode());
+        DataSet expectedData = new DBDataSet();
+        expectedData.put("name1", "value1");
+        expectedData.put("name2", "value2");
+        expectedData.put("name3", "value3");
+        expectedData.put(null, null);
+        assertEquals(expectedData.hashCode(), dataSet.hashCode());
     }
 
     @Test
-    public void testEquals() {
+    public void testNotEquals() {
         DataSet expectedData = new DBDataSet();
         expectedData.put("name1", "value1");
         expectedData.put("name2", "value2");
@@ -88,7 +89,6 @@ public class DBDataSetTest {
         DataSet expectedData = null;
         assertNotEquals(expectedData, dataSet);
     }
-
 
     @Test
     public void testToString() {
