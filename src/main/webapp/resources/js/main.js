@@ -37,8 +37,9 @@ $(function () {
             showMenu();
         else if (pagePart == "tables")
             showTablesList();
-        else //if (pagePart == "find")
+        else if (pagePart == "find")
             showTableData();
+        else showMenu();
     }
     var load = function () {
         var hash = window.location.hash.substring(1);
