@@ -67,6 +67,12 @@ public abstract class ServiceImpl implements Service {
     }
 
     @Override
+    public void addData(DBManager dbManager, String tableName, DataSet data) throws SQLException {
+        dbManager.insertRows(tableName, data);
+        userOperationRepository.createOperation(dbManager, "insert");
+    }
+
+    @Override
     public List<UserOperation> userOperations(String name) {
         return userOperationRepository.findByUserName(name);
     }

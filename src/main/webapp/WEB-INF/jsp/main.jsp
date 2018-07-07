@@ -15,5 +15,6 @@
     <%@include file="menu.jsp" %>
     <%@include file="tables.jsp" %>
     <%@include file="find.jsp" %>
+    <%@include file="create.jsp" %>
     </body>
 </html>

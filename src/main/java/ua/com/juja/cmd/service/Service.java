@@ -1,6 +1,7 @@
 package ua.com.juja.cmd.service;
 
 import ua.com.juja.cmd.model.DBManager;
+import ua.com.juja.cmd.model.DataSet;
 import ua.com.juja.cmd.model.entity.UserOperation;
 
 import java.sql.SQLException;
@@ -19,6 +20,8 @@ public interface Service {
     void create(DBManager dbManager, String tableName, Set<String> columns) throws SQLException;
 
     void delete(DBManager dbManager, String tableName) throws SQLException;
+
+    void addData(DBManager dbManager, String tableName, DataSet data) throws SQLException;
 
     List<UserOperation> userOperations(String name);
 }

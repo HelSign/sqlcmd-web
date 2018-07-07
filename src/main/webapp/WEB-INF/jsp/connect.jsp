@@ -10,9 +10,9 @@
 <form:form method="POST" action="connect" modelAttribute="connection">
     <fieldset>
         <legend>Personal information:</legend>
-        Database name<br><form:input path="dbName"/><br>
-        User name<br><form:input path="userName"/><br>
-        User password<br><form:input path="password"/><br>
+        Database name<br><form:input path="dbName" placeholder="sqlcmd"/><br>
+        User name<br><form:input path="userName" placeholder="postgres"/><br>
+        User password<br><form:input path="password" placeholder="postgres"/><br>
         <input type="submit" value="Submit">
     </fieldset>
 </form:form>

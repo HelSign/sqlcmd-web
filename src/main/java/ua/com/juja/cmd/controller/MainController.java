@@ -4,10 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import ua.com.juja.cmd.model.DBManager;
 import ua.com.juja.cmd.service.Service;
 
@@ -20,6 +17,11 @@ import java.util.Set;
 public class MainController {
     @Autowired
     private Service service;
+
+    @GetMapping(value="/")
+    public String homepage(){
+        return "main";
+    }
 
     @RequestMapping(value = "/main", method = RequestMethod.GET)
     public String mainPage(HttpServletRequest request) {
@@ -68,7 +70,7 @@ public class MainController {
             return "tables";
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST)
+  /*  @RequestMapping(value = "/create", method = RequestMethod.POST)
     public String create(@ModelAttribute("table") Table table, HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null) {
@@ -83,11 +85,11 @@ public class MainController {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            return "redirect:tables";
+            return "redirect:main#tables";
         }
-    }
+    }*/
 
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+   /* @RequestMapping(value = "/create", method = RequestMethod.GET)
     public String createForm(HttpServletRequest request, ModelMap model) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null) {
@@ -97,7 +99,7 @@ public class MainController {
             return "create";
         }
     }
-
+*/
     @RequestMapping(value = "/drop", method = RequestMethod.GET)
     public String drop(HttpServletRequest request, ModelMap model) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");

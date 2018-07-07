@@ -1,10 +1,11 @@
 package ua.com.juja.cmd.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.annotation.*;
 import ua.com.juja.cmd.model.DBDataSet;
 import ua.com.juja.cmd.model.DBManager;
 import ua.com.juja.cmd.model.DataSet;
@@ -12,10 +13,8 @@ import ua.com.juja.cmd.service.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class RestService {
@@ -40,10 +39,10 @@ public class RestService {
         return tables;
     }
 
-    @RequestMapping(value = "/find/content", method = RequestMethod.GET)
-    public List<List<String>> getTableContent(HttpServletRequest request) {
+    @RequestMapping(value = "find/{table}/content", method = RequestMethod.GET)
+    public List<List<String>> getTableContent(@PathVariable(value = "table") String table,
+                                              HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-        String table = request.getParameter("table");
         List<List<String>> tableContent = new LinkedList<>();
         if (table == null || dbManager == null)
             return tableContent;
@@ -55,4 +54,41 @@ public class RestService {
         return tableContent;
     }
 
+    @PostMapping(value = "/createTable")
+    // @ResponseBody
+    public String saveTable(@ModelAttribute("table") Table table,
+                            HttpServletRequest request) {
+        String message = "";
+        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
+        if (dbManager == null)
+            return null;
+
+        Set<String> columns = new LinkedHashSet<>();
+        columns.add(table.getColumn1());
+        columns.add(table.getColumn2());
+        columns.add(table.getColumn3());
+        try {
+            service.create(dbManager, table.getTableName(), columns);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        message = "Table was successfully created";
+        return message;
+    }
+
+    @PostMapping(value = "/drop")
+    public String dropTable(HttpServletRequest request) {
+        String table = request.getParameter("table");
+        String message = "";
+        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
+        if (dbManager == null)
+            return null;
+        try {
+            service.delete(dbManager, table);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        message = "Table was successfully cleared";
+        return message;
+    }
 }

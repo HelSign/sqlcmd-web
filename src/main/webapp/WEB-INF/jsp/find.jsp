@@ -3,7 +3,6 @@
 
 
 <table id="table" class="container" border="1">
-    <script type="text/javascript" src="${ctx}/resources/js/find.js"></script>
     <script id="tableHeader" type="text/x-jquery-tmpl">
             <tr>
                 {{each $data}}

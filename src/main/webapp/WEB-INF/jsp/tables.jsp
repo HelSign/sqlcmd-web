@@ -5,10 +5,11 @@
             <script type="text/javascript">
             var markup =
                 "<tr>" +
-                "<td> <a href=\"main?table={{=}}#find\"> {{=}}</a></td>" +
-                "<td> <a href=\"drop?table={{=}}\"> drop </a></td>" +
+                "<td> <a id=\"linkTable\" href=\"main#find/{{=}}\"> {{=}}</a></td>" +
+                "<td> <a id=\"linkDropTable\" href=\"main?table={{=}}#drop\"> drop </a></td>" +
                 "<td> <a href=\"update?table={{=}}\"> update </a></td>" +
                 "</tr>";
             $.template( "row-template", markup );
+
         </script>
         </table>
