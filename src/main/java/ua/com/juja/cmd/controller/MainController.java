@@ -70,37 +70,7 @@ public class MainController {
             return "tables";
     }
 
-  /*  @RequestMapping(value = "/create", method = RequestMethod.POST)
-    public String create(@ModelAttribute("table") Table table, HttpServletRequest request) {
-        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-        if (dbManager == null) {
-            return "redirect:connect";
-        } else {
-            try {
-                Set<String> columns = new LinkedHashSet<>();
-                columns.add(table.getColumn1());
-                columns.add(table.getColumn2());
-                columns.add(table.getColumn3());
-                service.create(dbManager, table.getTableName(), columns);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-            return "redirect:main#tables";
-        }
-    }*/
-
-   /* @RequestMapping(value = "/create", method = RequestMethod.GET)
-    public String createForm(HttpServletRequest request, ModelMap model) {
-        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-        if (dbManager == null) {
-            return "redirect:connect";
-        } else {
-            model.addAttribute("table", new Table());
-            return "create";
-        }
-    }
-*/
-    @RequestMapping(value = "/drop", method = RequestMethod.GET)
+  /*  @RequestMapping(value = "/drop", method = RequestMethod.GET)
     public String drop(HttpServletRequest request, ModelMap model) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null) {
@@ -116,7 +86,7 @@ public class MainController {
             }
             return "redirect:tables";
         }
-    }
+    }*/
 
     @RequestMapping(value = "/operations/{name}", method = RequestMethod.GET)
     public String showAllOperations(ModelMap model, @PathVariable(value = "name") String userName) {

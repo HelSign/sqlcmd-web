@@ -10,23 +10,23 @@ public interface DBManager {
 
     void closeConnection() throws SQLException;
 
-    int createTable(String name, Set<String> columns) throws SQLException;
+    int createTable(String name, Set<String> columns) ;
 
-    int insertRows(String table, DataSet data) throws SQLException;
+    int insertRows(String table, DataSet data) ;
 
-    int updateRows(String table, DataSet condition, DataSet data) throws SQLException;
+    int updateRows(String table, DataSet condition, DataSet data) ;
 
-    int deleteRows(String table, DataSet data) throws SQLException;
+    int deleteRows(String table, DataSet data);
 
-    int truncateTable(String table) throws SQLException;
+    int truncateTable(String table);
 
-    int dropTable(String table) throws SQLException;
+    int dropTable(String table);
 
-    List<DataSet> getTableData(String tableName) throws SQLException;
+    List<DataSet> getTableData(String tableName) ;
 
-    Set<String> getTableColumns(String tableName) throws SQLException;
+    Set<String> getTableColumns(String tableName);
 
-    Set<String> getTablesNames() throws SQLException;
+    Set<String> getTablesNames() ;
 
     boolean isConnected();
 

@@ -6,7 +6,6 @@ import ua.com.juja.cmd.model.DBManager;
 import ua.com.juja.cmd.service.Service;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
 import java.util.*;
 
 @RestController
@@ -24,11 +23,7 @@ public class RestService {
     public Set<String> getTablesList(HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         Set<String> tables = new HashSet<>();
-        try {
-            tables = service.tables(dbManager);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        tables = service.tables(dbManager);
         return tables;
     }
 
@@ -39,16 +34,11 @@ public class RestService {
         List<List<String>> tableContent = new LinkedList<>();
         if (table == null || dbManager == null)
             return tableContent;
-        try {
-            tableContent = service.find(dbManager, table);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        tableContent = service.find(dbManager, table);
         return tableContent;
     }
 
     @PostMapping(value = "/createTable")
-    // @ResponseBody
     public String saveTable(@ModelAttribute("table") Table table,
                             HttpServletRequest request) {
         String message = "";
@@ -60,11 +50,7 @@ public class RestService {
         columns.add(table.getColumn1());
         columns.add(table.getColumn2());
         columns.add(table.getColumn3());
-        try {
-            service.create(dbManager, table.getTableName(), columns);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        service.create(dbManager, table.getTableName(), columns);
         message = "Table was successfully created";
         return message;
     }
@@ -76,12 +62,8 @@ public class RestService {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null)
             return null;
-        try {
-            service.delete(dbManager, table);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        message = "Table was successfully cleared";
+        service.delete(dbManager, table);
+        message = "Table was successfully dropped";
         return message;
     }
 }

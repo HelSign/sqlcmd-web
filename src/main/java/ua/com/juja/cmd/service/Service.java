@@ -14,17 +14,17 @@ public interface Service {
 
     DBManager connect(String dbName, String userName, String password);
 
-    List<List<String>> find(DBManager dbManager,String table) throws SQLException;
+    List<List<String>> find(DBManager dbManager, String table);
 
-    Set<String> tables(DBManager dbManager) throws SQLException;
+    Set<String> tables(DBManager dbManager);
 
-    void create(DBManager dbManager, String tableName, Set<String> columns) throws SQLException;
+    void create(DBManager dbManager, String tableName, Set<String> columns);
 
-    void delete(DBManager dbManager, String tableName) throws SQLException;
+    void delete(DBManager dbManager, String tableName);
 
-    void addData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException;
+    void addData(DBManager dbManager, String tableName, Map<String, String> data);
 
-    void deleteData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException;
+    void deleteData(DBManager dbManager, String tableName, Map<String, String> data);
 
     List<UserOperation> userOperations(String name);
 }

@@ -5,7 +5,6 @@ import org.springframework.stereotype.Component;
 import ua.com.juja.cmd.model.*;
 import ua.com.juja.cmd.model.entity.UserOperation;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @Component
@@ -30,7 +29,7 @@ public abstract class ServiceImpl implements Service {
     }
 
     @Override
-    public List<List<String>> find(DBManager dbManager, String table) throws SQLException {
+    public List<List<String>> find(DBManager dbManager, String table) {
         List<List<String>> result = new LinkedList<>();
         Set<String> columnsSet = dbManager.getTableColumns(table);
         List<DataSet> dataSets = dbManager.getTableData(table);
@@ -48,26 +47,26 @@ public abstract class ServiceImpl implements Service {
     }
 
     @Override
-    public Set<String> tables(DBManager dbManager) throws SQLException {
+    public Set<String> tables(DBManager dbManager) {
         Set<String> result = dbManager.getTablesNames();
         userOperationRepository.createOperation(dbManager, "tables");
         return result;
     }
 
     @Override
-    public void create(DBManager dbManager, String tableName, Set<String> columns) throws SQLException {
+    public void create(DBManager dbManager, String tableName, Set<String> columns) {
         dbManager.createTable(tableName, columns);
         userOperationRepository.createOperation(dbManager, "create");
     }
 
     @Override
-    public void delete(DBManager dbManager, String tableName) throws SQLException {
+    public void delete(DBManager dbManager, String tableName) {
         dbManager.dropTable(tableName);
         userOperationRepository.createOperation(dbManager, "delete");
     }
 
     @Override
-    public void addData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException {
+    public void addData(DBManager dbManager, String tableName, Map<String, String> data) {
         DataSet dataDS = new DBDataSet();
         Set<String> columns = data.keySet();
         for (String column: columns) {
@@ -78,14 +77,14 @@ public abstract class ServiceImpl implements Service {
     }
 
     @Override
-    public void deleteData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException {
+    public void deleteData(DBManager dbManager, String tableName, Map<String, String> data) {
         DataSet condition = new DBDataSet();
         Set<String> columns = data.keySet();
         for (String column: columns) {
             condition.put(column, data.get(column));
         }
         dbManager.deleteRows(tableName, condition);
-        userOperationRepository.createOperation(dbManager, "insert");
+        userOperationRepository.createOperation(dbManager, "delete");
     }
 
     @Override

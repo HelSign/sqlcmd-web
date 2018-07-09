@@ -15,10 +15,12 @@ $(function () {
 
     var showTableData = function (tableName) {
         show("#table");
-        $.get("find/"+tableName+"/content", function (elements) {
-            $("#tableHeader").tmpl([elements[0]]).appendTo("#table");
+        $.get("find/" + tableName + "/content", function (elements) {
+            var columnNames = elements[0];
             delete elements[0];
+            $("#tableHeader").tmpl([columnNames]).appendTo("#table");
             $("#row-template").tmpl(elements).appendTo("#table");
+            $("#tableFooter").tmpl([columnNames]).appendTo("#table");
         });
     }
 

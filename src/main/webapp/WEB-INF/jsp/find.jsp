@@ -8,6 +8,7 @@
                 {{each $data}}
                     <th><h1> {{= $value}} </h1> </th>
                 {{/each}}
+                <td></td>
             </tr>
     </script>
     <script id="row-template" type="text/x-jquery-tmpl">
@@ -15,6 +16,18 @@
                 {{each $data}}
                     <td> {{= $value}}</td>
                 {{/each}}
+                <td></td>
             </tr>
         </script>
+    <form action="addData" id="addData" method="POST">
+    <script id="tableFooter" type="text/x-jquery-tmpl">
+            <tr>
+                {{each $data}}
+                    <td><input type="text" name="{{= $value}}">  </td>
+                {{/each}}
+                <td><button type="button" id="addDataBtn">+</button></td>
+            </tr>
+    </script>
+
+    </form>
 </table>
