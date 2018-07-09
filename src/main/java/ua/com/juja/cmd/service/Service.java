@@ -6,6 +6,7 @@ import ua.com.juja.cmd.model.entity.UserOperation;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public interface Service {
@@ -21,7 +22,9 @@ public interface Service {
 
     void delete(DBManager dbManager, String tableName) throws SQLException;
 
-    void addData(DBManager dbManager, String tableName, DataSet data) throws SQLException;
+    void addData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException;
+
+    void deleteData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException;
 
     List<UserOperation> userOperations(String name);
 }

@@ -67,8 +67,24 @@ public abstract class ServiceImpl implements Service {
     }
 
     @Override
-    public void addData(DBManager dbManager, String tableName, DataSet data) throws SQLException {
-        dbManager.insertRows(tableName, data);
+    public void addData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException {
+        DataSet dataDS = new DBDataSet();
+        Set<String> columns = data.keySet();
+        for (String column: columns) {
+            dataDS.put(column, data.get(column));
+        }
+        dbManager.insertRows(tableName, dataDS);
+        userOperationRepository.createOperation(dbManager, "insert");
+    }
+
+    @Override
+    public void deleteData(DBManager dbManager, String tableName, Map<String, String> data) throws SQLException {
+        DataSet condition = new DBDataSet();
+        Set<String> columns = data.keySet();
+        for (String column: columns) {
+            condition.put(column, data.get(column));
+        }
+        dbManager.deleteRows(tableName, condition);
         userOperationRepository.createOperation(dbManager, "insert");
     }
 
