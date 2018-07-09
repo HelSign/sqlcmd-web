@@ -74,8 +74,6 @@ $(function () {
         window.location.hash = "#tables";
     });
 
-
-
     var load = function () {
         var hash = window.location.hash.substring(1);
         var parts = hash.split('/');
@@ -88,12 +86,4 @@ $(function () {
 
     load();
 
-    //var myURL = document.location;
-    //  $("#linkTable").click( function(){alert("dfdfdf");});
-   // $(".linkTable").click(function(){
-       // $(this).hide();
-     //   window.location.search="table="+$(this).text();
-       // window.location.hash = "#find";
-        //showTableData();
-    //});
 });
