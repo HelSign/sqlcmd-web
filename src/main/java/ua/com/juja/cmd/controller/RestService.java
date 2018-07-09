@@ -1,20 +1,13 @@
 package ua.com.juja.cmd.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
-import ua.com.juja.cmd.model.DBDataSet;
 import ua.com.juja.cmd.model.DBManager;
-import ua.com.juja.cmd.model.DataSet;
 import ua.com.juja.cmd.service.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @RestController
 public class RestService {
