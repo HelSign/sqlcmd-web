@@ -4,8 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.datasource.DataSourceUtils;
-import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
@@ -69,10 +67,9 @@ public class JDBCManager implements DBManager {
      * @param name
      * @param columns
      * @return 1 if table was created without any exception
-     * @throws SQLException
      */
     @Override
-    public int createTable(String name, Set<String> columns) throws SQLException {
+    public int createTable(String name, Set<String> columns) {
         LOG.traceEntry();
         // todo check if required  checkIfConnected();
         String columnsList = StringUtils.collectionToDelimitedString(columns, " varchar(40),");
@@ -104,10 +101,9 @@ public class JDBCManager implements DBManager {
      * @param table String table name
      * @param data  DataSet object with data to be inserted (pairs of column name and value)
      * @return int number of inserted rows
-     * @throws SQLException
      */
     @Override
-    public int insertRows(String table, DataSet data) throws SQLException {
+    public int insertRows(String table, DataSet data) {
         LOG.traceEntry();
         checkIfConnected();
         String columnsList = StringUtils.collectionToCommaDelimitedString(data.getNames());
@@ -126,10 +122,9 @@ public class JDBCManager implements DBManager {
      * @param condition as pair of column name and value for part of UPDATE statement WHERE column=value
      * @param data      for update as pairs of column name and value for part of UPDATE statement SET column=value
      * @return int number of updated rows
-     * @throws SQLException
      */
     @Override
-    public int updateRows(String table, DataSet condition, DataSet data) throws SQLException {
+    public int updateRows(String table, DataSet condition, DataSet data) {
         LOG.traceEntry();
         checkIfConnected();
         int numRows;
@@ -152,7 +147,7 @@ public class JDBCManager implements DBManager {
      * @return number of deleted rows
      */
     @Override
-    public int deleteRows(String table, DataSet condition) throws SQLException { //todo to template
+    public int deleteRows(String table, DataSet condition) {
         LOG.traceEntry();
         checkIfConnected();
         String query = "DELETE FROM public." + table + " WHERE ";
@@ -162,12 +157,7 @@ public class JDBCManager implements DBManager {
         }
         LOG.trace(query);
         int numRows = -1;
-        try (Statement st = connection.createStatement()) {
-            numRows = st.executeUpdate(query);
-        } catch (SQLException e) {
-            LOG.error("", e);
-            throw e;
-        }
+        numRows = template.update(query);
         LOG.trace(numRows + " rows were deleted");
         LOG.traceExit();
         return numRows;
@@ -180,7 +170,7 @@ public class JDBCManager implements DBManager {
      * @return 1 if table was truncated
      */
     @Override
-    public int truncateTable(String table) throws SQLException {
+    public int truncateTable(String table) {
         LOG.traceEntry();
         checkIfConnected();
         String query = "TRUNCATE TABLE public." + table;
@@ -195,10 +185,9 @@ public class JDBCManager implements DBManager {
      *
      * @param table
      * @return 1 if table was deleted
-     * @throws SQLException
      */
     @Override
-    public int dropTable(String table) throws SQLException {
+    public int dropTable(String table) {
         LOG.traceEntry();
         checkIfConnected();
         String query = "DROP TABLE public." + table;
@@ -213,10 +202,9 @@ public class JDBCManager implements DBManager {
      *
      * @param tableName
      * @return rows with data
-     * @throws SQLException
      */
     @Override
-    public List<DataSet> getTableData(String tableName) throws SQLException {
+    public List<DataSet> getTableData(String tableName) {
         LOG.traceEntry();
         checkIfConnected();
         String query = "SELECT * FROM " + tableName;
@@ -241,10 +229,9 @@ public class JDBCManager implements DBManager {
      *
      * @param tableName
      * @return
-     * @throws SQLException
      */
     @Override
-    public Set<String> getTableColumns(String tableName) throws SQLException {
+    public Set<String> getTableColumns(String tableName) {
         LOG.traceEntry();
         checkIfConnected();
         Set<String> result;
@@ -261,14 +248,8 @@ public class JDBCManager implements DBManager {
         return result;
     }
 
-    /**
-     * Select list of table names
-     *
-     * @return
-     * @throws SQLException
-     */
     @Override
-    public Set<String> getTablesNames() throws SQLException {//todo streams
+    public Set<String> getTablesNames() {//todo streams
         LOG.traceEntry();
         checkIfConnected();
         String query = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' " +
