@@ -18,12 +18,12 @@ public class MainController {
     @Autowired
     private Service service;
 
-    @GetMapping(value="/")
-    public String homepage(){
+    @GetMapping(value = "/")
+    public String homepage() {
         return "main";
     }
 
-    @RequestMapping(value = "/main", method = RequestMethod.GET)
+    @GetMapping(value = "/main")
     public String mainPage(HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null) {
@@ -32,43 +32,41 @@ public class MainController {
             return "main";
     }
 
-    @RequestMapping(value = "/help", method = RequestMethod.GET)
+    @GetMapping(value = "/help")
     public String printHelp() {
         return "help";
     }
 
-    @RequestMapping(value = "/connect", method = RequestMethod.GET)
+    @GetMapping(value = "/connect")
     public String connectToDbGet(ModelMap model) {
         model.addAttribute("connection", new Connection());
         return "connect";
     }
 
-    @RequestMapping(value = "/connect", method = RequestMethod.POST)
-    public String connectToDbPost(@ModelAttribute("connection") Connection connection,
-                                  BindingResult result, ModelMap model, HttpServletRequest request) {
+    @PostMapping(value = "/connect")
+    public String connectToDbPost(@ModelAttribute("connection") Connection connection, HttpServletRequest request) {
         DBManager dbManager = service.connect(connection.getDbName(), connection.getUserName(), connection.getPassword());
         request.getSession().setAttribute("dbManager", dbManager);
         return "redirect:main";
     }
-
-    @RequestMapping(value = "/find", method = RequestMethod.GET)
+/*
+    @GetMapping(value = "/find")
     public String find(HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-
         if (dbManager == null) {
             return "redirect:connect";
         } else
             return "find";
     }
 
-    @RequestMapping(value = "/tables", method = RequestMethod.GET)
+   @RequestMapping(value = "/tables", method = RequestMethod.GET)
     public String tables(HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null) {
             return "redirect:connect";
         } else
             return "tables";
-    }
+    }*/
 
   /*  @RequestMapping(value = "/drop", method = RequestMethod.GET)
     public String drop(HttpServletRequest request, ModelMap model) {
@@ -88,7 +86,7 @@ public class MainController {
         }
     }*/
 
-    @RequestMapping(value = "/operations/{name}", method = RequestMethod.GET)
+    @GetMapping(value = "/operations/{name}")
     public String showAllOperations(ModelMap model, @PathVariable(value = "name") String userName) {
         model.addAttribute("operations", service.userOperations(userName));
         return "operations";

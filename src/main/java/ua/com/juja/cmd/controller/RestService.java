@@ -14,12 +14,12 @@ public class RestService {
     @Autowired
     private Service service;
 
-    @RequestMapping(value = "/menu/content", method = RequestMethod.GET)
+    @GetMapping(value = "/menu/content")
     public List<String> getMenuItems() {
         return service.getCommands();
     }
 
-    @RequestMapping(value = "/tables/content", method = RequestMethod.GET)
+    @GetMapping(value = "/tables/content")
     public Set<String> getTablesList(HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         Set<String> tables = new HashSet<>();
@@ -27,7 +27,7 @@ public class RestService {
         return tables;
     }
 
-    @RequestMapping(value = "find/{table}/content", method = RequestMethod.GET)
+    @GetMapping(value = "find/{table}/content")
     public List<List<String>> getTableContent(@PathVariable(value = "table") String table,
                                               HttpServletRequest request) {
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
