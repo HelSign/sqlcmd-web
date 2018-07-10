@@ -49,42 +49,6 @@ public class MainController {
         request.getSession().setAttribute("dbManager", dbManager);
         return "redirect:main";
     }
-/*
-    @GetMapping(value = "/find")
-    public String find(HttpServletRequest request) {
-        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-        if (dbManager == null) {
-            return "redirect:connect";
-        } else
-            return "find";
-    }
-
-   @RequestMapping(value = "/tables", method = RequestMethod.GET)
-    public String tables(HttpServletRequest request) {
-        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-        if (dbManager == null) {
-            return "redirect:connect";
-        } else
-            return "tables";
-    }*/
-
-  /*  @RequestMapping(value = "/drop", method = RequestMethod.GET)
-    public String drop(HttpServletRequest request, ModelMap model) {
-        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
-        if (dbManager == null) {
-            return "redirect:connect";
-        } else {
-            String table = request.getParameter("table");
-            if (table != null) {
-                try {
-                    service.delete(dbManager, table);
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
-            return "redirect:tables";
-        }
-    }*/
 
     @GetMapping(value = "/operations/{name}")
     public String showAllOperations(ModelMap model, @PathVariable(value = "name") String userName) {

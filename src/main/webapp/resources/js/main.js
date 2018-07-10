@@ -1,4 +1,5 @@
 $(function () {
+    var tableNameG;
 
     var showMenu = function () {
         show("#menu");
@@ -14,13 +15,16 @@ $(function () {
     }
 
     var showTableData = function (tableName) {
+        tableNameG=tableName;
         show("#table");
+        $("#tableName").val(tableName);
         $.get("find/" + tableName + "/content", function (elements) {
             var columnNames = elements[0];
             delete elements[0];
             $("#tableHeader").tmpl([columnNames]).appendTo("#table");
             $("#row-template").tmpl(elements).appendTo("#table");
-            $("#tableFooter").tmpl([columnNames]).appendTo("#table");
+            $("#tableFooter").tmpl([columnNames]).appendTo("#newRow");
+
         });
     }
 
@@ -50,7 +54,7 @@ $(function () {
     var loadPage = function (data) {
         hideAll();
         var pagePart = data[0];
-
+        tableName = data[1];
         if (pagePart == "menu")
             showMenu();
         else if (pagePart == "tables")
@@ -66,6 +70,7 @@ $(function () {
 
     $('button[id="createTableBtn"]').click(function (e) {
         e.preventDefault();
+
         $.post({
             url: 'createTable',
             data: $('form[name=create]').serialize()
@@ -74,6 +79,34 @@ $(function () {
         });
 
         window.location.hash = "#tables";
+    });
+
+    $('button[id="addDataBtn"]').click(function (e) {
+        e.preventDefault();
+
+        var arrayData=[];
+
+        var columnNameItems = $("#addData :input");
+        columnNameItems.each(function () {
+            arrayData.push($(this).val());
+        });
+
+        var tblinfo = {
+            tabelName:tableNameG,
+            row:arrayData
+        };
+var tmp = $.param(tblinfo);
+        alert(tmp);
+        $.post({
+            url: 'addData',
+           // data: $('form[name=addData]').serialize()
+           //data: JSON.stringify(tblinfo)
+            data: $.param(tblinfo)
+        }).done(function (mes) {
+            alert(mes);
+        });
+
+        window.location.hash = "#find/" + tableNameG;
     });
 
     var load = function () {

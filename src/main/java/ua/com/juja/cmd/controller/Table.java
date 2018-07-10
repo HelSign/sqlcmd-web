@@ -1,5 +1,7 @@
 package ua.com.juja.cmd.controller;
 
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 public class Table {
@@ -8,6 +10,16 @@ public class Table {
     private String column1;
     private String column2;
     private String column3;
+    private List<List<String>> row;
+
+    public Table() {
+        row = new LinkedList<List<String>>();
+    }
+
+    public Table(String tableName, List<List<String>> row) {
+        this.tableName = tableName;
+        this.row = row;
+    }
 
     public String getTableName() {
         return tableName;
@@ -41,6 +53,14 @@ public class Table {
         this.column1 = column1;
     }
 
+    public List<List<String>> getRow() {
+        return row;
+    }
+
+    public void setRow(List<List<String>> row) {
+        this.row = row;
+    }
+
    /* public Set<String> getColumns() {
         return columns;
     }
@@ -48,4 +68,5 @@ public class Table {
     public void setColumns(Set<String> columns) {
         this.columns = columns;
     }*/
+
 }

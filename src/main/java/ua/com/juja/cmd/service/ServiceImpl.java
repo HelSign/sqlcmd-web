@@ -66,7 +66,13 @@ public abstract class ServiceImpl implements Service {
     }
 
     @Override
-    public void addData(DBManager dbManager, String tableName, Map<String, String> data) {
+    public void addData(DBManager dbManager, String tableName, List<List<String>> data) {
+        for (List<String> row: data) {
+            System.out.println("row1: ");
+            for (String element: row)
+                System.out.print(element + ", ");
+        }
+       /*
         DataSet dataDS = new DBDataSet();
         Set<String> columns = data.keySet();
         for (String column: columns) {
@@ -74,6 +80,7 @@ public abstract class ServiceImpl implements Service {
         }
         dbManager.insertRows(tableName, dataDS);
         userOperationRepository.createOperation(dbManager, "insert");
+  */
     }
 
     @Override

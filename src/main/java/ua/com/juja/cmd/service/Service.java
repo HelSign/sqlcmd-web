@@ -24,6 +24,8 @@ public interface Service {
 
     void addData(DBManager dbManager, String tableName, Map<String, String> data);
 
+    void addData(DBManager dbManager, String tableName, List<List<String>> data);
+
     void deleteData(DBManager dbManager, String tableName, Map<String, String> data);
 
     List<UserOperation> userOperations(String name);

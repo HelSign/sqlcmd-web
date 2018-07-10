@@ -66,4 +66,21 @@ public class RestService {
         message = "Table was successfully dropped";
         return message;
     }
+
+    @PostMapping(value = "/addData")
+    public String insertData(@ModelAttribute("table") Table table,
+                             HttpServletRequest request) {
+        String message = "";
+        DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
+        if (dbManager == null)
+            return null;
+        String tableName = table.getTableName();
+        System.out.println("table = " + tableName);
+        List<List<String>> listData = table.getRow();
+        System.out.println("data are empty = " + listData.isEmpty());
+        System.out.println("col1=" + table.getColumn1());
+        service.addData(dbManager, tableName, listData);
+        message = "Data were inserted";
+        return message;
+    }
 }

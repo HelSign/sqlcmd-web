@@ -19,15 +19,21 @@
                 <td></td>
             </tr>
         </script>
-    <form action="addData" id="addData" method="POST">
-    <script id="tableFooter" type="text/x-jquery-tmpl">
-            <tr>
-                {{each $data}}
-                    <td><input type="text" name="{{= $value}}">  </td>
-                {{/each}}
-                <td><button type="button" id="addDataBtn">+</button></td>
-            </tr>
-    </script>
-
-    </form>
 </table>
+<div id="newRow">
+    <form action="addData" id="addData" method="POST" name="addData">
+     <input type="hidden" name="tableName" id="tableName" value="test">
+        <input type="text" name="Column1"/>
+        <script id="tableFooter" type="text/x-jquery-tmpl">
+      {{each $data}}
+                    <input type="text" name="{{= $value}}"/>
+                {{/each}}
+ </script>
+
+            <button type="submit" id="addDataBtn">+</button>
+      </form>
+
+
+
+
+</div>
