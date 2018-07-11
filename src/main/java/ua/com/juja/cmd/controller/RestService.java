@@ -1,11 +1,13 @@
 package ua.com.juja.cmd.controller;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ua.com.juja.cmd.model.DBManager;
 import ua.com.juja.cmd.service.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.BufferedReader;
 import java.util.*;
 
 @RestController
@@ -39,20 +41,30 @@ public class RestService {
     }
 
     @PostMapping(value = "/createTable")
-    public String saveTable(@ModelAttribute("table") Table table,
-                            HttpServletRequest request) {
+    public String saveTable(HttpServletRequest request) {
         String message = "";
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null)
             return null;
-
+        Table table = getTableFromJSON(request);
         Set<String> columns = new LinkedHashSet<>();
-        columns.add(table.getColumn1());
-        columns.add(table.getColumn2());
-        columns.add(table.getColumn3());
+        String[] addedColumns = table.getColumns();
+        Collections.addAll(columns, addedColumns);
         service.create(dbManager, table.getTableName(), columns);
         message = "Table was successfully created";
         return message;
+    }
+
+    private Table getTableFromJSON(HttpServletRequest request) {
+        Table table;
+        try {
+            BufferedReader reader = request.getReader();
+            Gson gson = new Gson();
+            table = gson.fromJson(reader, Table.class);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return table;
     }
 
     @PostMapping(value = "/drop")
@@ -68,18 +80,19 @@ public class RestService {
     }
 
     @PostMapping(value = "/addData")
-    public String insertData(@ModelAttribute("table") Table table,
-                             HttpServletRequest request) {
+    public String insertData(HttpServletRequest request) {
         String message = "";
         DBManager dbManager = (DBManager) request.getSession().getAttribute("dbManager");
         if (dbManager == null)
             return null;
+        Table table = getTableFromJSON(request);
         String tableName = table.getTableName();
-        System.out.println("table = " + tableName);
-        List<List<String>> listData = table.getRow();
-        System.out.println("data are empty = " + listData.isEmpty());
-        System.out.println("col1=" + table.getColumn1());
-        service.addData(dbManager, tableName, listData);
+        List<String> listData = Arrays.asList(table.getRow());
+        List<String> listColumns = Arrays.asList(table.getColumns());
+        List<List<String>> data = new LinkedList<>();
+        data.add(listColumns);
+        data.add(listData);
+        service.addData(dbManager, tableName, data);
         message = "Data were inserted";
         return message;
     }

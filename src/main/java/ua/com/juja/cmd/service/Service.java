@@ -22,8 +22,6 @@ public interface Service {
 
     void delete(DBManager dbManager, String tableName);
 
-    void addData(DBManager dbManager, String tableName, Map<String, String> data);
-
     void addData(DBManager dbManager, String tableName, List<List<String>> data);
 
     void deleteData(DBManager dbManager, String tableName, Map<String, String> data);

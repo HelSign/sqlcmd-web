@@ -67,20 +67,17 @@ public abstract class ServiceImpl implements Service {
 
     @Override
     public void addData(DBManager dbManager, String tableName, List<List<String>> data) {
-        for (List<String> row: data) {
-            System.out.println("row1: ");
-            for (String element: row)
-                System.out.print(element + ", ");
-        }
-       /*
         DataSet dataDS = new DBDataSet();
-        Set<String> columns = data.keySet();
-        for (String column: columns) {
-            dataDS.put(column, data.get(column));
+        List<String> columns = data.get(0);
+        data.remove(0);
+        for (List<String> row: data) {
+            for (int i = 0; i < row.size(); i++) {
+                dataDS.put(columns.get(i), row.get(i));
+            }
         }
+
         dbManager.insertRows(tableName, dataDS);
         userOperationRepository.createOperation(dbManager, "insert");
-  */
     }
 
     @Override

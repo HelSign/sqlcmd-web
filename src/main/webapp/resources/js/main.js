@@ -15,7 +15,7 @@ $(function () {
     }
 
     var showTableData = function (tableName) {
-        tableNameG=tableName;
+        tableNameG = tableName;
         show("#table");
         $("#tableName").val(tableName);
         $.get("find/" + tableName + "/content", function (elements) {
@@ -23,9 +23,20 @@ $(function () {
             delete elements[0];
             $("#tableHeader").tmpl([columnNames]).appendTo("#table");
             $("#row-template").tmpl(elements).appendTo("#table");
-            $("#tableFooter").tmpl([columnNames]).appendTo("#newRow");
+            addColumns(columnNames);
 
         });
+    }
+
+    var addColumns = function (columns) {
+        var htmlForm = "";
+        //<input type=\"hidden\" name=\"tableName\" value=\"test\">";
+        var len = columns.length;
+        for (i = 0; i < len; i++) {
+            htmlForm += "<input name=\"" + columns[i] + "\"/>";
+        }
+
+        $("#addData").prepend(htmlForm);
     }
 
     var dropTable = function () {
@@ -71,9 +82,26 @@ $(function () {
     $('button[id="createTableBtn"]').click(function (e) {
         e.preventDefault();
 
+        var arrayColumn = [];
+        tableNameG = $("#tableName").val();
+
+        var columnNameItems = $("#create .column");
+        columnNameItems.each(function () {
+            if ($(this).val().length != 0) {
+                arrayColumn.push($(this).val());
+            }
+        });
+
+
+        var tblinfo = {
+            tableName: tableNameG,
+            columns: arrayColumn
+        };
+var tmp = JSON.stringify(tblinfo);
+alert(tmp);
         $.post({
             url: 'createTable',
-            data: $('form[name=create]').serialize()
+            data: JSON.stringify(tblinfo)
         }).done(function (mes) {
             alert(mes);
         });
@@ -84,24 +112,24 @@ $(function () {
     $('button[id="addDataBtn"]').click(function (e) {
         e.preventDefault();
 
-        var arrayData=[];
-
+        var arrayData = [];
+        var arrayColumn = [];
         var columnNameItems = $("#addData :input");
         columnNameItems.each(function () {
-            arrayData.push($(this).val());
+            if ($(this).val().length != 0) {
+                arrayColumn.push($(this).attr("name"));
+                arrayData.push($(this).val());
+            }
         });
 
         var tblinfo = {
-            tabelName:tableNameG,
-            row:arrayData
+            tableName: tableNameG,
+            row: arrayData,
+            columns: arrayColumn
         };
-var tmp = $.param(tblinfo);
-        alert(tmp);
         $.post({
             url: 'addData',
-           // data: $('form[name=addData]').serialize()
-           //data: JSON.stringify(tblinfo)
-            data: $.param(tblinfo)
+            data: JSON.stringify(tblinfo)
         }).done(function (mes) {
             alert(mes);
         });
