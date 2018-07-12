@@ -75,7 +75,6 @@ public abstract class ServiceImpl implements Service {
                 dataDS.put(columns.get(i), row.get(i));
             }
         }
-
         dbManager.insertRows(tableName, dataDS);
         userOperationRepository.createOperation(dbManager, "insert");
     }

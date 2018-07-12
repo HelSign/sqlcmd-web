@@ -45,7 +45,7 @@ public class JDBCManager implements DBManager {
         }
         Configuration configuration = new Configuration();
         String url = configuration.getUrl();
-        LOG.trace("Trying to connect to DB with url='{}'", url);
+        LOG.debug("Trying to connect to DB with url='{}'", url);
         try {
             connection = DriverManager.getConnection(url, user, password);
             template = new JdbcTemplate(new SingleConnectionDataSource(connection, false));
@@ -58,7 +58,7 @@ public class JDBCManager implements DBManager {
             throw new RuntimeException(String.format("Connection failed to database: %s as user: %s , url: %s ",
                     dbName, user, url), e);
         }
-        LOG.trace("Connection has been created");
+        LOG.debug("Connection has been created");
     }
 
     /**
@@ -74,7 +74,7 @@ public class JDBCManager implements DBManager {
         // todo check if required  checkIfConnected();
         String columnsList = StringUtils.collectionToDelimitedString(columns, " varchar(40),");
         String query = String.format("CREATE TABLE %s (%s  varchar(40))", name, columnsList);
-        LOG.trace(query);
+        LOG.debug(query);
         template.execute(query);
         LOG.traceExit();
         return 1;
@@ -91,7 +91,7 @@ public class JDBCManager implements DBManager {
             if (!connection.getAutoCommit())
                 connection.commit();
             connection.close();
-            LOG.trace("Connection has been closed");
+            LOG.debug("Connection has been closed");
         }
     }
 
@@ -109,7 +109,7 @@ public class JDBCManager implements DBManager {
         String columnsList = StringUtils.collectionToCommaDelimitedString(data.getNames());
         String valuesList = StringUtils.collectionToDelimitedString(data.getValues(), "','");
         String query = String.format("INSERT INTO public.%1$s (%2$s) VALUES ('%3$s')", table, columnsList, valuesList);
-        LOG.trace(query);
+        LOG.debug(query);
         int numRows = template.update(query);
         LOG.traceExit();
         return numRows;
@@ -131,10 +131,11 @@ public class JDBCManager implements DBManager {
         String columnsList = StringUtils.collectionToDelimitedString(data.getNames(), ",", "", "=?");
         String conditionList = StringUtils.collectionToDelimitedString(condition.getNames(), ",", "", "=?");
         String query = String.format("UPDATE public.%s SET %s WHERE %s", table, columnsList, conditionList);
+        LOG.debug(query);
         List<Object> objects = new LinkedList<>(data.getValues());
         objects.addAll(condition.getValues());
         numRows = template.update(query, objects.toArray());
-        LOG.trace(numRows + " rows were updated");
+        LOG.debug(numRows + " rows were updated");
         LOG.traceExit();
         return numRows;
     }
@@ -155,10 +156,10 @@ public class JDBCManager implements DBManager {
         for (String colName: columns) {
             query = String.format(query + "%1$s='%2$s'", colName, condition.get(colName));
         }
-        LOG.trace(query);
+        LOG.debug(query);
         int numRows = -1;
         numRows = template.update(query);
-        LOG.trace(numRows + " rows were deleted");
+        LOG.debug(numRows + " rows were deleted");
         LOG.traceExit();
         return numRows;
     }
@@ -174,7 +175,7 @@ public class JDBCManager implements DBManager {
         LOG.traceEntry();
         checkIfConnected();
         String query = "TRUNCATE TABLE public." + table;
-        LOG.trace(query);
+        LOG.debug(query);
         int numRows = template.update(query);
         LOG.traceExit();
         return numRows;
@@ -191,7 +192,7 @@ public class JDBCManager implements DBManager {
         LOG.traceEntry();
         checkIfConnected();
         String query = "DROP TABLE public." + table;
-        LOG.trace(query);
+        LOG.warn(query);
         int numRows = template.update(query);
         LOG.traceExit();
         return numRows;
@@ -208,7 +209,7 @@ public class JDBCManager implements DBManager {
         LOG.traceEntry();
         checkIfConnected();
         String query = "SELECT * FROM " + tableName;
-        LOG.trace(query);
+        LOG.debug(query);
         List<DataSet> result = template.query(query, new RowMapper<DataSet>() {//todo lambda
             @Override
             public DataSet mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -237,7 +238,7 @@ public class JDBCManager implements DBManager {
         Set<String> result;
         String query = "SELECT * FROM information_schema.columns WHERE table_schema = 'public' AND table_name = '" +
                 tableName + "'";
-        LOG.trace(query);
+        LOG.debug(query);
         result = new LinkedHashSet<>(template.query(query, new RowMapper<String>() {
             @Override
             public String mapRow(ResultSet resultSet, int i) throws SQLException {
@@ -254,7 +255,7 @@ public class JDBCManager implements DBManager {
         checkIfConnected();
         String query = "SELECT table_name FROM information_schema.tables WHERE table_schema='public' " +
                 "AND table_type='BASE TABLE'";
-        LOG.trace(query);
+        LOG.debug(query);
         Set<String> result = new LinkedHashSet<>(template.query(query,
                 (rs, rownum) -> {
                     return rs.getString("table_name");

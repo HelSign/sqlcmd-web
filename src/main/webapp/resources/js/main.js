@@ -23,21 +23,33 @@ $(function () {
             delete elements[0];
             $("#tableHeader").tmpl([columnNames]).appendTo("#table");
             $("#row-template").tmpl(elements).appendTo("#table");
-            addColumns(columnNames);
+            addColumnsToForm(columnNames);
 
         });
     }
 
-    var addColumns = function (columns) {
+    var addColumnsToForm = function (columns) {
         var htmlForm = "";
-        //<input type=\"hidden\" name=\"tableName\" value=\"test\">";
-        var len = columns.length;
-        for (i = 0; i < len; i++) {
+        var colNum = columns.length;
+        for (i = 0; i < colNum; i++) {
             htmlForm += "<input name=\"" + columns[i] + "\"/>";
         }
-
         $("#addData").prepend(htmlForm);
     }
+
+
+    var showCreateTableForm = function () {
+              show("#create");
+    }
+
+    $('button[id="addMoreColumns"]').click(function (e) {
+        e.preventDefault();
+        var columnNameItems = $("#create .column");
+        var lastColumn;
+        lastColumn = columnNameItems.length+1;
+        var htmlForm = "<input class=\"column\" name=\"Column" + lastColumn + "\"/>";
+        $("#create").append(htmlForm);
+    });
 
     var dropTable = function () {
         show("#tables");
@@ -45,10 +57,6 @@ $(function () {
             alert(mes);
         });
         window.location.hash = "#tables";
-    }
-
-    var showCreateTableForm = function () {
-        show("#create");
     }
 
     var hideAll = function () {
@@ -92,13 +100,12 @@ $(function () {
             }
         });
 
-
         var tblinfo = {
             tableName: tableNameG,
             columns: arrayColumn
         };
-var tmp = JSON.stringify(tblinfo);
-alert(tmp);
+        var tmp = JSON.stringify(tblinfo);
+        alert(tmp);
         $.post({
             url: 'createTable',
             data: JSON.stringify(tblinfo)
