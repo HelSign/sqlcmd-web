@@ -39,16 +39,19 @@ $(function () {
 
 
     var showCreateTableForm = function () {
-              show("#create");
+        show("#create");
     }
 
-    $('button[id="addMoreColumns"]').click(function (e) {
+    $('input[id="addMoreColumns"]').click(function (e) {
         e.preventDefault();
-        var columnNameItems = $("#create .column");
+        var columnNameItems = $("#createForm .column");
         var lastColumn;
-        lastColumn = columnNameItems.length+1;
-        var htmlForm = "<input class=\"column\" name=\"Column" + lastColumn + "\"/>";
-        $("#create").append(htmlForm);
+        lastColumn = columnNameItems.length + 1;
+        var htmlForm = "Column " + lastColumn + "<input class=\"column\" name=\"Column" + lastColumn + "\"/>";
+        var submitBtn =$("#createTableBtn");
+        var addBtn = $("#addMoreColumns");
+        $("#createForm").append(htmlForm).append(addBtn).append(submitBtn);
+
     });
 
     var dropTable = function () {

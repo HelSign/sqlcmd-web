@@ -1,14 +1,15 @@
 
+<div id="create"> <fieldset>
+    <legend>Add table:</legend>
+<form method="POST" id="createForm" action="createTable" name="create">
 
-<form method="POST" action="createTable" id="create" name="create">
-    <fieldset>
-        <legend>Add table:</legend>
-        Table name<br><input id="tableName"/><br>
-        Column1<br><input class="column" name="column1"/><br>
-        Column2<br><input  class="column" name="column2"/><br>
-        Column3<br><input  class="column" name="column3"/>
+        Table name<input id="tableName"/><br>
+        Column1<input class="column" name="column1"/>
+        Column2<input  class="column" name="column2"/>
+        Column3<input  class="column" name="column3"/>
+    <input type="button" id="addMoreColumns" value="+">
+    <br><button type="submit" id="createTableBtn">Submit</button>
 
-        <button type="submit" id="createTableBtn">Submit</button>
-    </fieldset>
 </form>
-<button id="addMoreColumns">+</button><br>
+ </fieldset>
+</div>
